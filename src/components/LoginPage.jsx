@@ -26,7 +26,6 @@ import App from '../App';
             });
     }
 };
-
         return (
             <div className="static-login-page">
                 <div className="static-login-container">
