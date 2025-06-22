@@ -1,87 +1,104 @@
-// src/components/StaticLoginPage.js
+    import React, { useState } from 'react'; 
+    import '../styles/Login.css';
+    import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+    import AdminPanel from './AdminPanel';
+import App from '../App';
 
-import React from 'react';
-import '../styles/Login.css';
-const LoginPage = () => {
-    return (
-        <div className="static-login-page">
-            <div className="static-login-container">
-                <div className="static-login-branding">
-                    <div className="branding-content">
-                        <h1>Welcome to the Admin Panel</h1>
-                        <p>A professional dashboard for accessing Admin Panel</p>
-                    </div>
-                </div>
+    const LoginPage = () => {
+        const [email, setEmail] = useState('');
+        const [password, setPassword] = useState('');
 
-                {/* Right Side: The Login Form */}
-                <div className="static-login-form-container">
-                    <form className="static-login-form">
-                        <h2>Sign In</h2>
-                        <p className="form-intro">Access your account using your credentials.</p>
-                        
-                        {/* Email Input */}
-                        <div className="input-group">
-                            {/* <FaUser className="input-icon" /> */}
-                            <span className="input-icon">👤</span>
-                            <input
-                                type="email"
-                                placeholder="Email Address"
-                                aria-label="Email Address"
-                            />
-                        </div>
-                        
-                        {/* Password Input */}
-                        <div className="input-group">
-                            {/* <FaLock className="input-icon" /> */}
-                            <span className="input-icon">🔒</span>
-                            <input
-                                type="password"
-                                placeholder="Password"
-                                aria-label="Password"
-                            />
-                            
-                        </div>
-                        
-                        {/* Form Options */}
-                        <div className="form-options">
-                            <label className="remember-me">
-                                <input type="checkbox" />
-                                Remember me
-                            </label>
-                            <a href="#forgot-password">Forgot Password?</a>
-                        </div>
-                        
-                        {/* Submit Button */}
-                        <button type="submit" className="submit-btn">
-                            Sign In
-                        </button>
-                        
-                        <div className="separator">
-                            <span>OR</span>
-                        </div>
-                        
-                        {/* Social Logins */}
-                        <div className="social-logins">
-                           <button type="button" className="social-btn google">
-                               {/* <FaGoogle /> */}
-                               <span>G</span>
-                               Sign in with Google
-                           </button>
-                           <button type="button" className="social-btn facebook">
-                               {/* <FaFacebook /> */}
-                               <span>f</span>
-                               Sign in with Facebook
-                           </button>
-                        </div>
-                        
-                        <p className="signup-link">
-                            Don't have an account? <a href="#signup">Sign Up for free</a>
-                        </p>
-                    </form>
-                </div>
-            </div>
-        </div>
-    );
+        const handleSubmit = (event) => {
+            event.preventDefault();
+            if (!email || !password) {
+                alert('Please enter both an email and a password.');
+                return; 
+            }
+            else;{
+            const auth = getAuth(App);
+            createUserWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+                alert("4");
+            
+            })
+            .catch((error) => {
+                alert("Invalid login");
+            });
+    }
 };
 
-export default LoginPage;
+        return (
+            <div className="static-login-page">
+                <div className="static-login-container">
+                    <div className="static-login-branding">
+                        <div className="branding-content">
+                            <h1>Welcome to the Admin Panel</h1>
+                            <p>A professional dashboard for accessing Admin Panel</p>
+                        </div>
+                    </div>
+
+                    <div className="static-login-form-container">
+                        {/* 4. CONNECT HANDLER: Attach the handleSubmit function to the form's onSubmit event */}
+                        <form className="static-login-form" onSubmit={handleSubmit}>
+                            <h2>Sign In</h2>
+                            <p className="form-intro">Access your account using your credentials.</p>
+                            
+                            <div className="input-group">
+                                <span className="input-icon">👤</span>
+                                <input 
+                                    id="Email_address"
+                                    type="email"
+                                    placeholder="Email Address"
+                                    aria-label="Email Address"
+                                    // 5. CONNECT STATE: Link this input to the 'email' state
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                />
+                            </div>
+                            
+                            <div className="input-group">
+                                <span className="input-icon">🔒</span>
+                                <input 
+                                    id="Password"
+                                    type="password"
+                                    placeholder="Password"
+                                    aria-label="Password"
+                                    // 6. CONNECT STATE: Link this input to the 'password' state
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                />
+                            </div>
+                            
+                            <div className="form-options">
+                                <label className="remember-me">
+                                    <input type="checkbox" />
+                                    Remember me
+                                </label>
+                                <a href="#forgot-password">Forgot Password?</a>
+                            </div>
+                            
+                            {/* This button will now trigger the form's onSubmit event */}
+                            <button type="submit" className="submit-btn">
+                                Sign In
+                            </button>
+                            
+                            <div className="separator"><span>OR</span></div>
+                            
+                            <div className="social-logins">
+                            <button id="signin_google" type="button" className="social-btn google">
+                                <span>G</span>
+                                Sign in with Google
+                            </button>
+                            </div>
+                            
+                            <p className="signup-link">
+                                Don't have an account? <a href="#signup">Sign Up for free</a>
+                            </p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        );
+    };
+
+    export default LoginPage;
