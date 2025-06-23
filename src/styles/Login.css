@@ -1,11 +1,13 @@
-/* src/components/StaticLoginPage.css */
+/* src/styles/Login.css */
 
 /* Using a modern, clean font */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
-  --primary-color: #f31a1a; /* A nice blue */
+  --primary-color: #f31a1a;
   --primary-hover: #e61c1c;
+  /* IMPROVEMENT: Added a variable for the focus shadow to match the theme */
+  --primary-shadow: rgba(243, 26, 26, 0.3); 
   --text-dark: #1f2937;
   --text-light: #6b7280;
   --background-light: #f9fafb;
@@ -74,8 +76,8 @@
 
 /* --- Right Side: Form --- */
 .static-login-form-container {
-  width: 50%;
-  padding: 50px 80px;
+  width: 55%; /* Changed to 55% to fill container */
+  padding: 50px 60px; /* Adjusted padding for better spacing */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -100,7 +102,7 @@
 
 .input-icon {
   position: absolute;
-  left: 10px;
+  left: 15px; /* Standardized icon position */
   top: 50%;
   transform: translateY(-50%);
   color: var(--text-light);
@@ -109,12 +111,13 @@
 
 .input-group input {
   width: 100%;
-  padding: 15px 10px 12px 50px;
+  padding: 14px 50px; /* Symmetrical padding */
   border: 1px solid var(--border-color);
   border-radius: 0.5rem;
   font-size: 1rem;
   color: var(--text-dark);
   transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box; /* Ensures padding is included in width */
 }
 
 .input-group input::placeholder {
@@ -124,19 +127,26 @@
 .input-group input:focus {
   outline: none;
   border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+  /* FIX: Using the red primary-shadow variable for consistency */
+  box-shadow: 0 0 0 3px var(--primary-shadow);
 }
 
-.password-toggle {
+/* --- THIS IS THE CORRECTED CODE FOR THE PASSWORD TOGGLE --- */
+.password-toggle-btn {
   position: absolute;
-  right: -50px;
-  top: 55%;
+  /* FIX: Changed from -50px to 15px to place it inside the input field */
+  right: 15px;
+  /* FIX: Changed from 55% to 50% for perfect vertical centering */
+  top: 50%;
   transform: translateY(-50%);
   background: none;
   border: none;
   cursor: pointer;
   color: var(--text-light);
   font-size: 1.2rem;
+  display: flex; /* Helps with icon alignment */
+  align-items: center; /* Helps with icon alignment */
+  padding: 0;
 }
 
 .form-options {
@@ -236,13 +246,19 @@
   font-size: 0.95rem;
 }
 
-.signup-link a {
-  color: var(--primary-color);
-  font-weight: 600;
-  text-decoration: none;
+.link-style-button {
+    margin-left: 8px;
+    background: none;
+    border: none;
+    color: var(--primary-color);
+    cursor: pointer;
+    padding: 0;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: 600;
 }
-.signup-link a:hover {
-  text-decoration: underline;
+.link-style-button:hover {
+    text-decoration: underline;
 }
 
 /* --- Responsive Design --- */

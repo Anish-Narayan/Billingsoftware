@@ -24,7 +24,7 @@ const AdminPanel = () => {
           </a>
         </nav>
         <div className="sidebar-footer">
-          <a href="#" className="nav-link">
+          <a href="/login" className="nav-link">
             <FaSignOutAlt /> Log Out
           </a>
         </div>

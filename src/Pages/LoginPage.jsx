@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import '../styles/Login.css';
+import { useNavigate } from 'react-router-dom';
 import { auth, provider, db } from '../firebase';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { 
     createUserWithEmailAndPassword, 
     signInWithEmailAndPassword, 
@@ -11,11 +13,12 @@ import { doc, setDoc, getDoc } from "firebase/firestore";
 const LoginPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [isNewUser, setIsNewUser] = useState(false);  // Toggle between login/signup
+    const [isNewUser, setIsNewUser] = useState(false);  
+    const navigate = useNavigate();
+    const [showPassword, setShowPassword] = useState(false);
 
     const handleEmailPassword = async (event) => {
         event.preventDefault();
-
         if (!email || !password) {
             alert("Please enter both email and password");
             return;
@@ -23,26 +26,26 @@ const LoginPage = () => {
 
         try {
             if (isNewUser) {
-                // Sign Up flow
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
-
-                // Create user document in Firestore
                 await setDoc(doc(db, "users", user.uid), {
                     email: user.email,
                     createdAt: new Date()
                 });
-
                 alert("Account created successfully!");
-                // Redirect to Admin Panel if needed
+                navigate('/admin');
             } else {
-                // Login flow
                 await signInWithEmailAndPassword(auth, email, password);
-                alert("Login successful!");
-                // Redirect to Admin Panel if needed
+                alert("Login Successful");
+                // Access control authentication 
+                if (email === "admin@sk.in") {
+                    navigate('/admin');
+                } else {
+                    navigate('/users');
+                }
             }
         } catch (error) {
-            alert(error.message);
+            alert(error.message);   
             console.error(error);
         }
     };
@@ -51,8 +54,6 @@ const LoginPage = () => {
         try {
             const result = await signInWithPopup(auth, provider);
             const user = result.user;
-
-            // Check if Firestore doc exists, if not create one
             const userDoc = await getDoc(doc(db, "users", user.uid));
             if (!userDoc.exists()) {
                 await setDoc(doc(db, "users", user.uid), {
@@ -60,9 +61,8 @@ const LoginPage = () => {
                     createdAt: new Date()
                 });
             }
-
             alert("Google login successful!");
-            // Redirect to Admin Panel if needed
+            navigate('/admin');
         } catch (error) {
             alert("Google login failed: " + error.message);
             console.error(error);
@@ -97,11 +97,18 @@ const LoginPage = () => {
                         <div className="input-group">
                             <span className="input-icon">🔒</span>
                             <input 
-                                type="password"
+                                type={showPassword ? "text" : "password"}
                                 placeholder="Password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                             />
+                            <button 
+                                type="button" 
+                                className="password-toggle-btn"
+                                onClick={() => setShowPassword(!showPassword)}
+                            >
+                                {showPassword ? <FaEyeSlash /> : <FaEye />}
+                            </button>
                         </div>
                         
                         <button type="submit" className="submit-btn">
