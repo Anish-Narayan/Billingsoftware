@@ -4,7 +4,7 @@ import './App.css'; // This file will style the landing page
 
 // Import your Loginpage component.
 // The path must match your file structure.
-import Loginpage from './components/LoginPage.jsx';
+import Loginpage from './Pages/LoginPage.jsx';
 import AdminPanel from './components/AdminPanel.jsx';
 
 // A simple, static component for the landing page.
