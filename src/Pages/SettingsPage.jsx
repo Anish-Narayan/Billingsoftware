@@ -5,6 +5,7 @@ import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { updateProfile, updateEmail, updatePassword } from 'firebase/auth';
 import { FaUsers, FaBoxOpen, FaFileAlt, FaFileInvoiceDollar, FaDollarSign, FaChartBar, FaCog, FaSignOutAlt, FaBell, FaUserCircle, FaEye, FaEyeSlash } from 'react-icons/fa';
 import '../styles/SettingsPage.css';
+import { onAuthStateChanged } from 'firebase/auth';
 
 const SettingsPage = () => {
   const [userData, setUserData] = useState({ displayName: '', email: '' });
@@ -17,9 +18,9 @@ const SettingsPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      const user = auth.currentUser;
-      if (user) {
+  const unsubscribe = onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      try {
         const userDoc = await getDoc(doc(db, 'users', user.uid));
         if (userDoc.exists()) {
           setUserData({
@@ -29,14 +30,21 @@ const SettingsPage = () => {
           setNotifications(userDoc.data().notifications || false);
         }
         setLoading(false);
-      } else {
-        setError('No user is logged in.');
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+        setError('Failed to load user data.');
         setLoading(false);
-        navigate('/login');
       }
-    };
-    fetchUserData();
-  }, [navigate]);
+    } else {
+      // Only redirect if we're sure there's no user
+      setLoading(false);
+      navigate('/login');
+    }
+  });
+
+  // Cleanup subscription on unmount
+  return () => unsubscribe();
+}, [navigate]);
 
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
