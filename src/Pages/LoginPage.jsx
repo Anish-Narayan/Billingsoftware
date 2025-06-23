@@ -1,13 +1,19 @@
 import React, { useState } from 'react';
 import '../styles/Login.css';
-import { auth, provider } from '../firebase';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import { auth, provider, db } from '../firebase';
+import { 
+    createUserWithEmailAndPassword, 
+    signInWithEmailAndPassword, 
+    signInWithPopup 
+} from "firebase/auth";
+import { doc, setDoc, getDoc } from "firebase/firestore";
 
 const LoginPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [isNewUser, setIsNewUser] = useState(false);  // Toggle between login/signup
 
-    const handleEmailPasswordLogin = async (event) => {
+    const handleEmailPassword = async (event) => {
         event.preventDefault();
 
         if (!email || !password) {
@@ -16,22 +22,49 @@ const LoginPage = () => {
         }
 
         try {
-            await signInWithEmailAndPassword(auth, email, password);
-            alert("Login successful!");
-            // Redirect to Admin Panel after successful login
+            if (isNewUser) {
+                // Sign Up flow
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+
+                // Create user document in Firestore
+                await setDoc(doc(db, "users", user.uid), {
+                    email: user.email,
+                    createdAt: new Date()
+                });
+
+                alert("Account created successfully!");
+                // Redirect to Admin Panel if needed
+            } else {
+                // Login flow
+                await signInWithEmailAndPassword(auth, email, password);
+                alert("Login successful!");
+                // Redirect to Admin Panel if needed
+            }
         } catch (error) {
-            alert("Invalid email or password");
+            alert(error.message);
             console.error(error);
         }
     };
 
     const handleGoogleSignIn = async () => {
         try {
-            await signInWithPopup(auth, provider);
+            const result = await signInWithPopup(auth, provider);
+            const user = result.user;
+
+            // Check if Firestore doc exists, if not create one
+            const userDoc = await getDoc(doc(db, "users", user.uid));
+            if (!userDoc.exists()) {
+                await setDoc(doc(db, "users", user.uid), {
+                    email: user.email,
+                    createdAt: new Date()
+                });
+            }
+
             alert("Google login successful!");
-            // Redirect to Admin Panel after successful login
+            // Redirect to Admin Panel if needed
         } catch (error) {
-            alert("Google login failed");
+            alert("Google login failed: " + error.message);
             console.error(error);
         }
     };
@@ -47,8 +80,8 @@ const LoginPage = () => {
                 </div>
 
                 <div className="static-login-form-container">
-                    <form className="static-login-form" onSubmit={handleEmailPasswordLogin}>
-                        <h2>Sign In</h2>
+                    <form className="static-login-form" onSubmit={handleEmailPassword}>
+                        <h2>{isNewUser ? "Sign Up" : "Sign In"}</h2>
                         <p className="form-intro">Access your account using your credentials.</p>
                         
                         <div className="input-group">
@@ -72,7 +105,7 @@ const LoginPage = () => {
                         </div>
                         
                         <button type="submit" className="submit-btn">
-                            Sign In
+                            {isNewUser ? "Sign Up" : "Sign In"}
                         </button>
                         
                         <div className="separator"><span>OR</span></div>
@@ -84,7 +117,14 @@ const LoginPage = () => {
                         </div>
                         
                         <p className="signup-link">
-                            Don't have an account? <a href="#signup">Sign Up for free</a>
+                            {isNewUser ? "Already have an account?" : "Don't have an account?"}
+                            <button 
+                                type="button" 
+                                onClick={() => setIsNewUser(!isNewUser)} 
+                                style={{ marginLeft: "8px", background: "none", border: "none", color: "blue", cursor: "pointer" }}
+                            >
+                                {isNewUser ? "Sign In" : "Sign Up"}
+                            </button>
                         </p>
                     </form>
                 </div>
