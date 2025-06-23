@@ -1,0 +1,165 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&display=swap');
+
+.user-panel {
+  display: flex;
+  min-height: 100vh;
+  font-family: 'Nunito Sans', sans-serif;
+  background-color: #f4f7fa;
+}
+
+.sidebar {
+  width: 260px;
+  background-color: #1a2232;
+  color: #aeb2b9;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+.sidebar-header {
+  padding: 1.5rem;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ffffff;
+  border-bottom: 1px solid #2a3444;
+}
+
+.sidebar-nav {
+  flex-grow: 1;
+  padding-top: 1rem;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  color: #aeb2b9;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  font-weight: 600;
+}
+
+.nav-link:hover {
+  background-color: #2a3444;
+  color: #ffffff;
+}
+
+.nav-link.active {
+  background-color: #3b82f6;
+  color: #ffffff;
+}
+
+.nav-link svg {
+  margin-right: 0.5rem;
+}
+
+.sidebar-footer {
+  padding: 1.5rem;
+  border-top: 1px solid #2a3444;
+}
+
+.main-content {
+  flex-grow: 1;
+  padding: 2rem;
+  overflow-y: auto;
+}
+
+.main-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.main-header h1 {
+  font-size: 2rem;
+  color: #1a2232;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.action-icon {
+  font-size: 1.5rem;
+  color: #6c757d;
+  cursor: pointer;
+}
+
+.content-card {
+  background-color: #ffffff;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  margin-bottom: 2rem;
+}
+
+.content-card h2 {
+  margin: 0 0 1.5rem 0;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 1rem;
+  font-size: 1.5rem;
+  color: #1a2232;
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+th {
+  color: #6c757d;
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+}
+
+tbody tr:hover {
+  background-color: #f9fafb;
+}
+
+.status {
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.status.generated {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.status.archived {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+.charts-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.chart {
+  flex: 1;
+  min-width: 300px;
+  background-color: #ffffff;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}

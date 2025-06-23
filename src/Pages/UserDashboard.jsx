@@ -1,6 +1,7 @@
 import React from 'react';
 import '../styles/UserDashboard.css';
 import { FaUsers, FaBoxOpen, FaFileAlt, FaFileInvoiceDollar, FaDollarSign, FaChartBar, FaCog, FaSignOutAlt, FaBell, FaUserCircle } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 const UserDashboard = () => {
   return (
@@ -25,12 +26,12 @@ const UserDashboard = () => {
           <a href="#" className="nav-link">
             <FaDollarSign /> Payments Details
           </a>
-          <a href="#" className="nav-link">
+          <Link to="/users/reports" className="nav-link">
             <FaChartBar /> Reports
-          </a>
-          <a href="#" className="nav-link">
+          </Link>
+          <Link to="/users/settings" className="nav-link">
             <FaCog /> Settings
-          </a>
+          </Link>
         </nav>
         <div className="sidebar-footer">
           <a href="/login" className="nav-link">
