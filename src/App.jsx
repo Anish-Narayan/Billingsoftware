@@ -7,6 +7,8 @@ import './App.css'; // This file will style the landing page
 import Loginpage from './Pages/LoginPage.jsx';
 import AdminPanel from './Pages/AdminPanel.jsx';
 import UserDashboard from './Pages/UserDashboard.jsx';
+import SettingsPage from './Pages/SettingsPage.jsx';
+import ReportsPage from './Pages/ReportsPage.jsx';
 
 // A simple, static component for the landing page.
 function LandingPage() {
@@ -39,6 +41,8 @@ function App() {
         <Route path="/login" element={<Loginpage />} />
         <Route path="/admin" element={<AdminPanel/>}/>
         <Route path="/users" element={<UserDashboard/>}/>
+        <Route path="/users/settings" element={<SettingsPage />} />
+        <Route path="/users/reports" element={<ReportsPage />} />
       </Routes>
     </BrowserRouter>
   );
