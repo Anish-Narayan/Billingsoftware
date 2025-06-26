@@ -40,9 +40,11 @@ function App() {
         {/* When the user navigates to "/login", show your Loginpage component */}
         <Route path="/login" element={<Loginpage />} />
         <Route path="/admin" element={<AdminPanel/>}/>
-        <Route path="/users" element={<UserDashboard/>}/>
-        <Route path="/users/settings" element={<SettingsPage />} />
-        <Route path="/users/reports" element={<ReportsPage />} />
+        <Route path="/users" element={<UserDashboard />}>
+          <Route index element={<div>Customers Overview</div>} /> {/* Default content */}
+          <Route path="reports" element={<ReportsPage />} />
+          <Route path="settings" element={<SettingsPage />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );

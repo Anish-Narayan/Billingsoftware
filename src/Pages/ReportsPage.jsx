@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { auth } from '../firebase';
-import { FaUsers, FaBoxOpen, FaFileAlt, FaFileInvoiceDollar, FaDollarSign, FaChartBar, FaCog, FaSignOutAlt, FaBell, FaUserCircle } from 'react-icons/fa';
+import { FaBell, FaUserCircle } from 'react-icons/fa';
 import { Line, Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend } from 'chart.js';
 import '../styles/ReportsPage.css';
@@ -112,40 +112,7 @@ const ReportsPage = () => {
 
   return (
     <div className="user-panel">
-      <aside className="sidebar">
-        <div className="sidebar-header">
-          <h2>User Dashboard</h2>
-        </div>
-        <nav className="sidebar-nav">
-          <Link to="/users" className="nav-link">
-            <FaUsers /> Customers
-          </Link>
-          <Link to="#" className="nav-link">
-            <FaBoxOpen /> Items
-          </Link>
-          <Link to="#" className="nav-link">
-            <FaFileAlt /> Estimates
-          </Link>
-          <Link to="#" className="nav-link">
-            <FaFileInvoiceDollar /> Invoices
-          </Link>
-          <Link to="#" className="nav-link">
-            <FaDollarSign /> Payments Details
-          </Link>
-          <Link to="/users/reports" className="nav-link active">
-            <FaChartBar /> Reports
-          </Link>
-          <Link to="/users/settings" className="nav-link">
-            <FaCog /> Settings
-          </Link>
-        </nav>
-        <div className="sidebar-footer">
-          <Link to="/login" className="nav-link" onClick={handleSignOut}>
-            <FaSignOutAlt /> Log Out
-          </Link>
-        </div>
-      </aside>
-      <main className="main-content">
+      <main className="main-content" style={{ width: '100%' }}>
         <header className="main-header">
           <h1>Reports</h1>
           <div className="header-actions">

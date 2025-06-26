@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { auth, db } from '../firebase';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { updateProfile, updateEmail, updatePassword } from 'firebase/auth';
-import { FaUsers, FaBoxOpen, FaFileAlt, FaFileInvoiceDollar, FaDollarSign, FaChartBar, FaCog, FaSignOutAlt, FaBell, FaUserCircle, FaEye, FaEyeSlash } from 'react-icons/fa';
+import { FaBell, FaUserCircle, FaEye, FaEyeSlash } from 'react-icons/fa';
 import '../styles/SettingsPage.css';
 import { onAuthStateChanged } from 'firebase/auth';
 
@@ -18,33 +18,31 @@ const SettingsPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-  const unsubscribe = onAuthStateChanged(auth, async (user) => {
-    if (user) {
-      try {
-        const userDoc = await getDoc(doc(db, 'users', user.uid));
-        if (userDoc.exists()) {
-          setUserData({
-            displayName: user.displayName || userDoc.data().displayName || '',
-            email: user.email || userDoc.data().email,
-          });
-          setNotifications(userDoc.data().notifications || false);
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        try {
+          const userDoc = await getDoc(doc(db, 'users', user.uid));
+          if (userDoc.exists()) {
+            setUserData({
+              displayName: user.displayName || userDoc.data().displayName || '',
+              email: user.email || userDoc.data().email,
+            });
+            setNotifications(userDoc.data().notifications || false);
+          }
+          setLoading(false);
+        } catch (error) {
+          console.error('Error fetching user data:', error);
+          setError('Failed to load user data.');
+          setLoading(false);
         }
+      } else {
         setLoading(false);
-      } catch (error) {
-        console.error('Error fetching user data:', error);
-        setError('Failed to load user data.');
-        setLoading(false);
+        navigate('/login');
       }
-    } else {
-      // Only redirect if we're sure there's no user
-      setLoading(false);
-      navigate('/login');
-    }
-  });
+    });
 
-  // Cleanup subscription on unmount
-  return () => unsubscribe();
-}, [navigate]);
+    return () => unsubscribe();
+  }, [navigate]);
 
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
@@ -96,41 +94,7 @@ const SettingsPage = () => {
 
   return (
     <div className="user-dashboard">
-      <aside className="sidebar">
-        <div className="sidebar-header">
-          <h2>User Dashboard</h2>
-        </div>
-        <nav className="sidebar-nav">
-          <a href="/users" className="nav-link">
-            <FaUsers /> Customers
-          </a>
-          <a href="#" className="nav-link">
-            <FaBoxOpen /> Items
-          </a>
-          <a href="#" className="nav-link">
-            <FaFileAlt /> Estimates
-          </a>
-          <a href="#" className="nav-link">
-            <FaFileInvoiceDollar /> Invoices
-          </a>
-          <a href="#" className="nav-link">
-            <FaDollarSign /> Payments Details
-          </a>
-          <a href="#" className="nav-link">
-            <FaChartBar /> Reports
-          </a>
-          <a href="/users/settings" className="nav-link active">
-            <FaCog /> Settings
-          </a>
-        </nav>
-        <div className="sidebar-footer">
-          <a href="#" className="nav-link" onClick={handleSignOut}>
-            <FaSignOutAlt /> Log Out
-          </a>
-        </div>
-      </aside>
-
-      <main className="main-content">
+      <main className="main-content" style={{ width: '100%' }}>
         <header className="main-header">
           <h1>Settings</h1>
           <div className="header-actions">
